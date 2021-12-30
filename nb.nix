@@ -1,6 +1,6 @@
 { pkgs }: pkgs.stdenv.mkDerivation rec {
   pname = "nb";
-  version = "6.7.9-r2";
+  version = "6.7.9-r3";
 
   src = pkgs.fetchFromGitHub {
     owner = "xwmx";
@@ -14,9 +14,6 @@
 
   buildPhase = "true";
   installPhase = ''
-    # Replace /usr/bin/env shebangs
-    patchShebangs ./nb
-
     # Install main files
     mkdir -p $out/bin
     install ./nb $out/bin
@@ -27,6 +24,14 @@
     installShellCompletion --zsh --name _nb etc/nb-completion.zsh
   '';
   postFixup = ''
+    # Replace /usr/bin/env shebangs
+    patchShebangs $out/bin/nb
+
+    # Prevent the script name from being .nb-wrapped
+    substituteInPlace $out/bin/nb \
+      --replace '_ME="$(basename "''${0}")"' '_ME="nb"'
+
+    grep _ME= ./nb
     # Wrap with ncat
     wrapProgram $out/bin/nb \
       --prefix PATH : "${pkgs.lib.makeBinPath (with pkgs; [ ncat ])}" \
