@@ -1,6 +1,6 @@
 { pkgs }: pkgs.stdenv.mkDerivation rec {
   pname = "nb";
-  version = "6.7.9-r1";
+  version = "6.7.9-r2";
 
   src = pkgs.fetchFromGitHub {
     owner = "xwmx";
@@ -9,7 +9,8 @@
     sha256 = "sha256-TCuFRQ5t620dNhGAFT6ux8egLydElHi/wRWMPvp2QZ0=";
     fetchSubmodules = true;
   };
-  nativeBuildInputs = with pkgs; [ installShellFiles ];
+  nativeBuildInputs = with pkgs; [ installShellFiles makeWrapper ];
+  builtInputs = with pkgs; [ ncat ];
 
   buildPhase = "true";
   installPhase = ''
@@ -24,6 +25,12 @@
     # Install shell completion
     installShellCompletion --bash --name nb.bash etc/nb-completion.bash
     installShellCompletion --zsh --name _nb etc/nb-completion.zsh
+  '';
+  postFixup = ''
+    # Wrap with ncat
+    wrapProgram $out/bin/nb \
+      --prefix PATH : "${pkgs.lib.makeBinPath (with pkgs; [ ncat ])}" \
+      --set BROWSER firefox
   '';
 
   meta = with pkgs.lib; {
