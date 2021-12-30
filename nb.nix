@@ -1,6 +1,16 @@
-{ pkgs }: pkgs.stdenv.mkDerivation rec {
+{ pkgs }:
+let
+  deps = with pkgs; [
+    ncat
+    pandoc
+    ripgrep
+    bat
+    ranger
+  ];
+in
+pkgs.stdenv.mkDerivation rec {
   pname = "nb";
-  version = "6.7.9-r3";
+  version = "6.7.9-r4";
 
   src = pkgs.fetchFromGitHub {
     owner = "xwmx";
@@ -10,7 +20,7 @@
     fetchSubmodules = true;
   };
   nativeBuildInputs = with pkgs; [ installShellFiles makeWrapper ];
-  builtInputs = with pkgs; [ ncat ];
+  builtInputs = deps;
 
   buildPhase = "true";
   installPhase = ''
@@ -34,7 +44,7 @@
     grep _ME= ./nb
     # Wrap with ncat
     wrapProgram $out/bin/nb \
-      --prefix PATH : "${pkgs.lib.makeBinPath (with pkgs; [ ncat ])}" \
+      --prefix PATH : "${pkgs.lib.makeBinPath deps}" \
       --set BROWSER firefox
   '';
 
