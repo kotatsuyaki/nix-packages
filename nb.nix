@@ -3,6 +3,7 @@ let
   deps = with pkgs; [
     ncat
     pandoc
+    texlive.combined.scheme-full
     ripgrep
     ripgrep-all
     bat
