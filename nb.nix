@@ -18,7 +18,7 @@ let
 in
 pkgs.stdenv.mkDerivation rec {
   pname = "nb";
-  version = "6.7.9-r6";
+  version = "6.7.9-r7";
 
   src = pkgs.fetchFromGitHub {
     owner = "xwmx";
@@ -48,8 +48,15 @@ pkgs.stdenv.mkDerivation rec {
     # Prevent the script name from being .nb-wrapped
     substituteInPlace $out/bin/nb \
       --replace '_ME="$(basename "''${0}")"' '_ME="nb"'
+    substituteInPlace $out/bin/nb \
+      --replace \
+        'background-color:   #1a1a1a;' \
+        'background-color:   hsl(60, 9%, 87%)'
+    substituteInPlace $out/bin/nb \
+      --replace \
+        'color:              #e6e6e6;' \
+        'color:              #262625;'
 
-    grep _ME= ./nb
     # Wrap with ncat
     wrapProgram $out/bin/nb \
       --prefix PATH : "${pkgs.lib.makeBinPath deps}" \
