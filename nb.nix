@@ -6,11 +6,12 @@ let
     ripgrep
     bat
     ranger
+    openssl
   ];
 in
 pkgs.stdenv.mkDerivation rec {
   pname = "nb";
-  version = "6.7.9-r4";
+  version = "6.7.9-r5";
 
   src = pkgs.fetchFromGitHub {
     owner = "xwmx";
