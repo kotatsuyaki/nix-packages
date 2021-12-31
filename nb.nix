@@ -4,6 +4,7 @@ let
     ncat
     pandoc
     ripgrep
+    ripgrep-all
     bat
     ranger
     openssl
