@@ -51,7 +51,7 @@ pkgs.stdenv.mkDerivation rec {
     substituteInPlace $out/bin/nb \
       --replace \
         'background-color:   #1a1a1a;' \
-        'background-color:   hsl(60, 9%, 87%)'
+        'background-color:   hsl(60, 9%, 87%);'
     substituteInPlace $out/bin/nb \
       --replace \
         'color:              #e6e6e6;' \
