@@ -1,19 +1,24 @@
 { pkgs }:
 let
   deps = with pkgs; [
+    # Not sure the purpose of this
     ncat
+    # For export
     pandoc
     texlive.combined.scheme-full
+    # For encryption
+    openssl
+    file
+    # For navigation
     ripgrep
     ripgrep-all
     bat
     ranger
-    openssl
   ];
 in
 pkgs.stdenv.mkDerivation rec {
   pname = "nb";
-  version = "6.7.9-r5";
+  version = "6.7.9-r6";
 
   src = pkgs.fetchFromGitHub {
     owner = "xwmx";
