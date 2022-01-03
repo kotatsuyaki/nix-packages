@@ -15,6 +15,7 @@
             inherit pkgs;
           };
         packages.nb = import ./nb.nix { inherit pkgs; };
+        packages.sv2v = import ./sv2v { inherit pkgs; };
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
             rnix-lsp
